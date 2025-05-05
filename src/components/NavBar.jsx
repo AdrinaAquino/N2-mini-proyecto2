@@ -1,6 +1,23 @@
 import React, { useState } from "react";
-export default function NavBar() {
+import useData from "../hooks/useData";
+export default function NavBar({
+  selectedCountry,
+  setSelectedCountry,
+  datosHoy,
+}) {
+  const { response: cities, loading } = useData("/static_Json/cities.json");
+
   const [menuVisible, setMenuVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredCities, setFilteredCities] = useState([]);
+
+  const handleSearch = () => {
+    const filtered = cities
+      .filter((city) => city.name.toLowerCase() === searchValue.toLowerCase())
+      .slice(0, 4);
+    setFilteredCities(filtered);
+  };
+
   return (
     <div className="bg-[#1E213A] flex flex-col w-screen h-screen overflow-hidden md:w-[30%] md:min-w-[380px] md:m-auto">
       <nav className="flex justify-around items-end h-16">
@@ -36,14 +53,35 @@ export default function NavBar() {
                 className="bg-transparent outline-none w-[233px] h-8 pr-1 rounded-md"
                 placeholder="search location"
                 type="text"
-                value=""
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
               />
             </div>
-            <button className="w-20 h-9 bg-[#3C47E9] px-1 font-semibold text-base text-[#E7E7EB] hover:bg-[#c586f9] cursor-pointer rounded-md">
+            <button
+              className="w-20 h-9 bg-[#3C47E9] px-1 font-semibold text-base text-[#E7E7EB] hover:bg-[#c586f9] cursor-pointer rounded-md"
+              onClick={handleSearch}
+            >
               Search
             </button>
           </nav>
-          <ul className="flex flex-col items-center w-full h-fit mt-80px pb-5"></ul>
+          <ul className="flex flex-col p-10 w-full h-fit mt-80px pb-5 text-white">
+            {!loading && filteredCities.length > 0 ? (
+              filteredCities.map((city) => (
+                <li
+                  key={city.id}
+                  className="cursor-pointer hover:border p-3"
+                  onClick={() => {
+                    setSelectedCountry(`${city.name}, ${city.country}`);
+                    setMenuVisible(false);
+                  }}
+                >
+                  <strong>{city.name}</strong>, {city.country_code}
+                </li>
+              ))
+            ) : (
+              <li className="text-[#88869D]">No results found</li>
+            )}
+          </ul>
         </div>
       )}
 
@@ -54,26 +92,37 @@ export default function NavBar() {
             className="w-full h-full object-cover opacity-15"
             src="/others/Cloud-background.png"
           />
-          <img src="public/weather/03d.png" alt="" className="absolute w-20" />
+          <img
+            src={`/weather/${datosHoy?.weather?.[0].icon}.png`}
+            alt=""
+            className="absolute w-20"
+          />
         </div>
 
         <div className="flex items-center">
-          <h2 className="font-medium text-9xl text-[#E7E7EB] my-8">20</h2>
+          <h2 className="font-medium text-9xl text-[#E7E7EB] my-8">
+            {datosHoy?.main?.temp}
+          </h2>
           <h3 className="mt-6 text-6xl text-[#A09FB1] font-medium">°C</h3>
         </div>
 
         <h2 className="capitalize pt-6 pb-12 text-3xl text-[#A09FB1] font-semibold">
-          broken clouds
+          {datosHoy?.weather?.[0]?.description}
         </h2>
 
         <p className="text-sm text-[#88869D] font-medium mb-6">
-          Today . Tue, 28 Apr
+          Today .
+          {new Date().toLocaleDateString("en-GB", {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+          })}
         </p>
 
-        <pre className="flex items-center gap-2 text-sm text-[#88869D] h-10 bottom-0 font-semibold mb-2">
+        <p className="flex items-center gap-2 text-sm text-[#88869D] h-10 bottom-0 font-semibold mb-2">
           <img alt="locationicon" className="mb-2 w-5" src="location_on.svg" />
-          Santa Cruz de la Sierra
-        </pre>
+          {selectedCountry}
+        </p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function DatosAire() {
+export default function DatosAire({ datosHoy }) {
   return (
     <div className="w-full max-w-sm px-5 mt-12 md:w-full md:max-w-none md:m-auto md:flex md:flex-col md:items-center md:justify-center">
       <h2 className="h-7 text-[#E7E7EB] text-2xl font-bold my-5 md:w-full md:max-w-2xl md:text-left">
@@ -13,7 +13,9 @@ export default function DatosAire() {
             Wind status
           </h2>
           <div className="flex items-end h-20 mb-4">
-            <h3 className="text-[#E7E7EB] text-6xl font-bold">{2.57}</h3>
+            <h3 className="text-[#E7E7EB] text-6xl font-bold">
+              {datosHoy?.wind?.speed}
+            </h3>
             <h4 className="text-[#E7E7EB] text-4xl mb-2 ml-1">ms</h4>
           </div>
           <div className="flex items-center text-[#E7E7EB] text-sm">
@@ -21,7 +23,7 @@ export default function DatosAire() {
               <img
                 alt="Navigation Icon"
                 src="/navigation.svg"
-                style={{ rotate: `${30}deg` }}
+                style={{ rotate: `${datosHoy?.wind?.deg}deg` }}
               />
             </span>
             {"S"}
@@ -33,7 +35,9 @@ export default function DatosAire() {
             Humidity
           </h2>
           <div className="flex items-end h-20 mb-4">
-            <h3 className="text-[#E7E7EB] text-6xl font-bold">{10}</h3>
+            <h3 className="text-[#E7E7EB] text-6xl font-bold">
+              {datosHoy?.main?.humidity}
+            </h3>
             <h4 className="text-[#E7E7EB] text-4xl mb-2 ml-1 text-right">%</h4>
           </div>
           <div className="w-[70%] font-bold text-xs flex justify-between text-[#A09FB1]">
@@ -44,7 +48,7 @@ export default function DatosAire() {
           <div className="flex items-center w-[70%] h-2 bg-[#E7E7EB] rounded-3xl">
             <div
               className="h-2 bg-[#FFEC65] rounded-3xl m-0 p-0"
-              style={{ width: `${10}%` }}
+              style={{ width: `${datosHoy?.main?.humidity}%` }}
             />
           </div>
           <div className="w-[70%] text-right font-bold text-[#A09FB1]">%</div>
@@ -55,7 +59,9 @@ export default function DatosAire() {
             Visibility
           </h2>
           <div className="flex items-end h-20 mb-4">
-            <h3 className="text-[#E7E7EB] text-6xl font-bold">{10.0}</h3>
+            <h3 className="text-[#E7E7EB] text-6xl font-bold">
+              {`${datosHoy?.visibility / 1000} `}
+            </h3>
             <h4 className="text-[#E7E7EB] text-4xl mb-2 ml-1">km</h4>
           </div>
         </div>
@@ -65,7 +71,9 @@ export default function DatosAire() {
             Air Pressure
           </h2>
           <div className="flex items-end h-20 mb-4">
-            <h3 className="text-[#E7E7EB] text-6xl font-bold">{1014}</h3>
+            <h3 className="text-[#E7E7EB] text-6xl font-bold">
+              {datosHoy?.main?.pressure}
+            </h3>
             <h4 className="text-[#E7E7EB] text-4xl mb-2 ml-1">mb</h4>
           </div>
         </div>
