@@ -4,6 +4,7 @@ export default function NavBar({
   selectedCountry,
   setSelectedCountry,
   datosHoy,
+  unit,
 }) {
   const { response: cities, loading } = useData("/static_Json/cities.json");
 
@@ -95,7 +96,7 @@ export default function NavBar({
           <img
             src={`/weather/${datosHoy?.weather?.[0].icon}.png`}
             alt=""
-            className="absolute w-20"
+            className="absolute w-40"
           />
         </div>
 
@@ -103,7 +104,9 @@ export default function NavBar({
           <h2 className="font-medium text-9xl text-[#E7E7EB] my-8">
             {datosHoy?.main?.temp}
           </h2>
-          <h3 className="mt-6 text-6xl text-[#A09FB1] font-medium">°C</h3>
+          <h3 className="mt-6 text-6xl text-[#A09FB1] font-medium">
+            {unit === "metric" ? "°C" : "°F"}
+          </h3>
         </div>
 
         <h2 className="capitalize pt-6 pb-12 text-3xl text-[#A09FB1] font-semibold">

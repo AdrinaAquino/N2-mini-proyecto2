@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function DatosAire({ datosHoy }) {
+export default function DatosAire({ datosHoy, unit }) {
   return (
     <div className="w-full max-w-sm px-5 mt-12 md:w-full md:max-w-none md:m-auto md:flex md:flex-col md:items-center md:justify-center">
       <h2 className="h-7 text-[#E7E7EB] text-2xl font-bold my-5 md:w-full md:max-w-2xl md:text-left">
@@ -16,7 +16,9 @@ export default function DatosAire({ datosHoy }) {
             <h3 className="text-[#E7E7EB] text-6xl font-bold">
               {datosHoy?.wind?.speed}
             </h3>
-            <h4 className="text-[#E7E7EB] text-4xl mb-2 ml-1">ms</h4>
+            <h4 className="text-[#E7E7EB] text-4xl mb-2 ml-1">
+              {unit === "metric" ? "ms" : "mph"}
+            </h4>
           </div>
           <div className="flex items-center text-[#E7E7EB] text-sm">
             <span className="flex justify-center items-center w-8 h-8 m-3 rounded-full bg-[#ffffff4d]">
@@ -60,9 +62,15 @@ export default function DatosAire({ datosHoy }) {
           </h2>
           <div className="flex items-end h-20 mb-4">
             <h3 className="text-[#E7E7EB] text-6xl font-bold">
-              {`${datosHoy?.visibility / 1000} `}
+              {`${
+                unit === "metric"
+                  ? datosHoy?.visibility / 1000
+                  : (datosHoy?.visibility / 1609.3439).toFixed(2)
+              } `}
             </h3>
-            <h4 className="text-[#E7E7EB] text-4xl mb-2 ml-1">km</h4>
+            <h4 className="text-[#E7E7EB] text-4xl mb-2 ml-1">
+              {unit === "metric" ? "km" : "miles"}
+            </h4>
           </div>
         </div>
 

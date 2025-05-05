@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import useData from "../hooks/useData";
 
-export default function TemperaturaDiaria({ selectedCountry }) {
-  const [unit, setUnit] = useState("metric");
-
+export default function TemperaturaDiaria({ selectedCountry, unit, setUnit }) {
   const { response, loading } = useData(
     `https://api.openweathermap.org/data/2.5/forecast?q=${selectedCountry}&appid=caa65e9571cc6093cf2e7a5cfc9a6156&units=${unit}`
   );
@@ -79,7 +77,7 @@ function getForecast(response) {
   return (filtered || []).map((item) => {
     const date = new Date(item.dt * 1000);
     const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
-    const day = date.getDate(); // 5
+    const day = date.getDate();
     const month = date.toLocaleDateString("en-US", { month: "short" });
 
     return {
